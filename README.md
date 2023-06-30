@@ -1,8 +1,8 @@
 # RECIPE CANISTER
-- Recipe Canister is a TypeScript (Azle) project on the ICP(Internet Computer TypeScript) platform that performs CRUD(Create, Read, Update and Delete) operations.
+- Recipe Canister is a TypeScript (Azle) project on the ICP (Internet Computer TypeScript) platform that performs CRUD (Create, Read, Update and Delete) operations.
 - Recipe provides users with the ability to perform the following
   1. Upload their favourite recipes.
-  2. See and rate other users recipes.
+  2. See and rate other user's recipes.
   3. Update their recipes and
   4. Delete recipes.
 
