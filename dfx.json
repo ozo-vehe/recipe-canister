@@ -1,0 +1,13 @@
+{
+  "canisters": {
+    "recipe": {
+      "main": "src/index.ts",
+      "type": "custom",
+      "build": "npx azle recipe",
+      "root": "src",
+      "ts": "src/index.ts",
+      "candid": "src/index.did",
+      "wasm": ".azle/recipe/recipe.wasm.gz"
+    }
+  }
+}
