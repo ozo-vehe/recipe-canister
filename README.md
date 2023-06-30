@@ -37,7 +37,7 @@ dfx start --background
 
 Your terminal will display an output similar to the one below.
 
-![]()
+![](https://github.com/ozo-vehe/recipe-canister/blob/main/image1.png)
 
 ### 7. Deploying the Canister
 Next, we will compile our canister code and install it on the local network using the dfx deploy command:
@@ -47,7 +47,7 @@ dfx deploy
 
 Executing the dfx deploy command should result in an output similar to:
 
-![]()
+![](https://github.com/ozo-vehe/recipe-canister/blob/main/image2.png)
 
 ### 8. Adding a Recipe:
 - First, we will invoke the `addRecipe()` function from our canister file. Execute the following command in your terminal:
