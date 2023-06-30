@@ -3,8 +3,9 @@
 - Recipe provides users with the ability to perform the following
   1. Upload their favourite recipes.
   2. See and rate other user's recipes.
-  3. Update their recipes and
-  4. Delete recipes.
+  3. Get recipes by their id or category
+  4. Update their recipes and
+  5. Delete recipes.
 
 
 ## Preparing the Development Environment
