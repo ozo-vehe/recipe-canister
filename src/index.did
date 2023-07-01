@@ -1,3 +1,4 @@
+type Favourite = record { isFav : bool; recipe : Recipe };
 type Recipe = record {
   id : text;
   preparationSteps : text;
@@ -15,13 +16,17 @@ type RecipePayload = record {
   ingredients : text;
 };
 type _AzleResult = variant { Ok : Recipe; Err : text };
-type _AzleResult_1 = variant { Ok : vec Recipe; Err : text };
+type _AzleResult_1 = variant { Ok : Favourite; Err : text };
+type _AzleResult_2 = variant { Ok : vec Recipe; Err : text };
 service : () -> {
   addRecipe : (RecipePayload) -> (_AzleResult);
   deleteRecipe : (text) -> (_AzleResult);
-  getRecipeByCategory : (text) -> (_AzleResult_1) query;
+  favRecipe : (text, bool) -> (_AzleResult_1);
+  getRecipeByCategory : (text) -> (_AzleResult_2) query;
   getRecipeById : (text) -> (_AzleResult) query;
-  getRecipes : () -> (_AzleResult_1) query;
+  getRecipes : () -> (_AzleResult_2) query;
+  getTopRatedRecipes : () -> (_AzleResult_2) query;
   rateRecipe : (text, float64) -> (_AzleResult);
+  searchRecipes : (text) -> (_AzleResult_2) query;
   updateRecipe : (text, RecipePayload) -> (_AzleResult);
 }

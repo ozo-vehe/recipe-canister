@@ -61,7 +61,7 @@ dfx canister call recipe addRecipe '(record {"name"= "Delicious Egg Salad for Sa
 ```
 > Take note of the id of the recipe generated as this will be used later.
 
-> Other recipes available includes the following:
+> Other recipes available includes the following (they should be placed in the curly braces {}):
 
 >  - "name"= "Tres Leches Pancakes"; "ingredients"= "2/3 cup sweetened condensed milk, 1/2 cup evaporated milk, 1/3 cup half and half, 1 box French vanilla cake mix, 1 1/4 cups almond milk, 3 large eggs, lightly beaten, 4 tablespoons vegetable oil, divided"; "preparationSteps"= " Combine sweetened condensed milk, evaporated milk, and half and half in a small saucepan and set over medium heat. Bring to a boil, stirring constantly for 3 minutes. Remove from heat and let cool. This is a sauce. Add cake mix, almond milk, eggs, and 3 tablespoons vegetable oil to a large bowl, and beat vigorously by hand for 2 minutes. Heat a large skillet or griddle over medium heat, and lightly coat with remaining vegetable oil. Add 1/4 cup of the batter for each pancake. Cook until edges begin to puff up, small bubbles appear, pop, and leave small holes. Flip pancakes and cook until golden brown on the other side. Serve pancakes with a drizzle of the sauce."; "category"="breakfast"
 
@@ -76,10 +76,30 @@ dfx canister call recipe addRecipe '(record {"name"= "Delicious Egg Salad for Sa
 dfx canister call recipe rateRecipe '("id", rating)'
 ```
 
-### 3. Get a Recipe by Category
-- To get a recipe by it's category, we will call the `getRecipeByCategory()` function. Execute the following comman in your terminal, replacing category with either breakfast, lunch or dinner.
+### 3. Favourite Recipe
+- To make a recipe your favourite we will call the `favRecipe()` function. Execute the following command in your terminal, replacing id with the id of the recipe and favourite with your true
+> Rating should be in decimal e.g a rating of 3 should be written as 3.0 etc
+
+```bash
+dfx canister call recipe favRecipe '("id", favourite)'
+```
+
+### 4. Get a Recipe by Category
+- To get a recipe by it's category, we will call the `getRecipeByCategory()` function. Execute the following command in your terminal, replacing category with either breakfast, lunch or dinner.
 ```bash
 dfx canister call recipe getRecipeByCategory '("category")'
+```
+
+### 5. Get a Recipes by Keyword
+- To search for a recipe by a keyword, we will call the `searchRecipes()` function. Execute the following command in your terminal, replacing keyword with a specific keyword (like egg or something else).
+```bash
+dfx canister call recipe searchRecipes '("keyword")'
+```
+
+### 6. Get Top Rated Recipe
+- To get the top rated recipe, we will call the `getTopRatedRecipes()` function. Execute the following command in your terminal. This function does not require any arguments/parameters to be passed.
+```bash
+dfx canister call recipe getTopRatedRecipes '()'
 ```
 
 ## :writing_hand: Contributing
