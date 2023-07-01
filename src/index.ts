@@ -1,11 +1,9 @@
-// cannister code goes here
 import { $query, $update, Record, StableBTreeMap, Vec, match, Result, nat64, ic, Opt, float32 } from 'azle';
 import { v4 as uuidv4 } from 'uuid';
 
 /**
  * This type represents a recipe that can be listed on a board.
  */
-
 type Recipe = Record<{
     id: string;
     name: string;
@@ -25,9 +23,7 @@ type RecipePayload = Record<{
     category: string;
 }>
 
-// Store of all the recipe saved to the recipe canister
 const recipeStorage = new StableBTreeMap<string, Recipe>(0, 44, 1024);
-
 
 $query;
 export function getRecipes(): Result<Vec<Recipe>, string> {
@@ -45,16 +41,42 @@ export function getRecipeById(id: string): Result<Recipe, string> {
 $query;
 export function getRecipeByCategory(category: string): Result<Vec<Recipe>, string> {
     const recipeLength = recipeStorage.len();
-    const recipe: Vec<Recipe> = []; // Create an empty array to store the recipe with the particular category
-    const recipes = recipeStorage.items(); // Store all the recipes saved in a variable, so we can loop over them
+    const recipe: Vec<Recipe> = [];
+    const recipes = recipeStorage.items();
 
-    for(let i = 0; i < recipeLength; i++) {
-        if(recipes[Number(i)][1].category == category) {
-            recipe.push(recipes[Number(i)][1]); // If a particular recipe contains the required category, puss it into the recipe array created
+    for (let i = 0; i < recipeLength; i++) {
+        if (recipes[Number(i)][1].category === category) {
+            recipe.push(recipes[Number(i)][1]);
         }
     }
 
-    return Result.Ok(recipe); // Return the recipe array with the recipe having the desired category
+    return Result.Ok(recipe);
+}
+
+$query;
+export function searchRecipes(keyword: string): Result<Vec<Recipe>, string> {
+    const recipeLength = recipeStorage.len();
+    const matchedRecipes: Vec<Recipe> = [];
+    const recipes = recipeStorage.items();
+
+    for (let i = 0; i < recipeLength; i++) {
+        const recipe = recipes[Number(i)][1];
+        if (
+            recipe.name.toLowerCase().includes(keyword.toLowerCase()) ||
+            recipe.ingredients.toLowerCase().includes(keyword.toLowerCase())
+        ) {
+            matchedRecipes.push(recipe);
+        }
+    }
+
+    return Result.Ok(matchedRecipes);
+}
+
+$query;
+export function getTopRatedRecipes(): Result<Vec<Recipe>, string> {
+    const recipes = recipeStorage.values();
+    const sortedRecipes = recipes.sort((a, b) => b.rating - a.rating);
+    return Result.Ok(sortedRecipes);
 }
 
 $update;
@@ -88,18 +110,14 @@ export function updateRecipe(id: string, payload: RecipePayload): Result<Recipe,
 
 $update;
 export function rateRecipe(id: string, rate: number): Result<Recipe, string> {
-    // Get the current rating of the particular recipe to be rated
     const recipeRating: any = match(recipeStorage.get(id), {
         Some: (rec) => {
             return rec.rating;
         },
         None: () => Result.Err<Recipe, string>(`Oops sorry, we couldn't update your recipe with the id=${id}. Recipe was not found`)
     })
-    // Calculate the new rating by adding the current rating to the user's 
-    // rating and dividing the result by 5
     const rating: any = ((recipeRating + rate) / 5);
 
-    // Return the recipe with the new rating added to it
     return match(recipeStorage.get(id), {
         Some: (recipe) => {
             const ratingRecipe: Recipe = {
@@ -122,8 +140,6 @@ export function deleteRecipe(id: string): Result<Recipe, string> {
     });
 }
 
-
-
 // a workaround to make uuid package work with Azle
 globalThis.crypto = {
     getRandomValues: () => {
@@ -136,3 +152,4 @@ globalThis.crypto = {
         return array
     }
 }
+
