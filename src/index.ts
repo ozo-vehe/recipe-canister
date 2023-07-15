@@ -1,11 +1,10 @@
-import { $query, $update, Record, StableBTreeMap, Vec, match, Result, nat64, nat32, ic, Opt, Principal } from 'azle';
+import { $query, $update, Record, StableBTreeMap, Vec, match, Result, nat64, ic, Opt, float32 } from 'azle';
 import { v4 as uuidv4 } from 'uuid';
 
 /**
  * This type represents a recipe that can be listed on a board.
  */
 type Recipe = Record<{
-    owner: Principal;
     id: string;
     name: string;
     ingredients: string;
@@ -13,9 +12,7 @@ type Recipe = Record<{
     category: string;
     uploadedAt: nat64;
     updatedAt: Opt<nat64>;
-    rating: nat32;
-    ratedCount: nat32;
-    rated: Opt<Vec<string>>;
+    rating: float32;
 }>
 
 type Favourite = Record<{
@@ -33,7 +30,6 @@ type RecipePayload = Record<{
 
 // Store of all the recipe saved to the recipe canister
 const recipeStorage = new StableBTreeMap<string, Recipe>(0, 44, 1024);
-
 
 $query;
 export function getRecipes(): Result<Vec<Recipe>, string> {
@@ -108,26 +104,23 @@ export function favRecipe(id: string, favourite: boolean): Result<Favourite, str
 
 $update;
 export function rateRecipe(id: string, rate: number): Result<Recipe, string> {
+    // Get the current rating of the particular recipe to be rated
+    const recipeRating: any = match(recipeStorage.get(id), {
+        Some: (rec) => {
+            return rec.rating;
+        },
+        None: () => Result.Err<Recipe, string>(`Oops sorry, we couldn't update your recipe with the id=${id}. Recipe was not found`)
+    })
+    // Calculate the new rating by adding the current rating to the user's 
+    // rating and dividing the result by 5
+    const rating: any = ((recipeRating + rate) / 5);
 
     // Return the recipe with the new rating added to it
     return match(recipeStorage.get(id), {
         Some: (recipe) => {
-            let rated: Vec<string> = []
-            // checks if the rated array exists
-            if(recipe.rated.Some){
-                rated = [...recipe.rated.Some]
-            }
-            // checks if caller has already rated recipe
-            if(rated.includes(ic.caller().toString())){
-                return Result.Err<Recipe, string>(`Already rated recipe with id ${id}`)
-            }
-            const _rating = recipe.rating + rate;
-            // add caller to the rated array and update the rating, ratedCount and updatedAt properties of the recipe
             const ratingRecipe: Recipe = {
                 ...recipe,
-                rating: _rating,
-                rated: Opt.Some([...rated, ic.caller().toString()]),
-                ratedCount: recipe.ratedCount + 1,
+                rating,
                 updatedAt: Opt.Some(ic.time())
             };
             recipeStorage.insert(recipe.id, ratingRecipe);
@@ -140,13 +133,10 @@ export function rateRecipe(id: string, rate: number): Result<Recipe, string> {
 $update;
 export function addRecipe(payload: RecipePayload): Result<Recipe, string> {
     const recipe: Recipe = {
-        owner: ic.caller(),
         id: uuidv4(),
         uploadedAt: ic.time(),
         updatedAt: Opt.None,
-        rating: 0,
-        ratedCount: 0,
-        rated: Opt.None,
+        rating: 1.0,
         ...payload
     };
     recipeStorage.insert(recipe.id, recipe);
@@ -157,10 +147,6 @@ $update;
 export function updateRecipe(id: string, payload: RecipePayload): Result<Recipe, string> {
     return match(recipeStorage.get(id), {
         Some: (recipe) => {
-            // checks if recipe owner is the caller
-            if(recipe.owner.toString() !== ic.caller().toString()){
-                return Result.Err<Recipe, string>("You are not the owner of the recipe")
-            }
             const updatedRecipe: Recipe = {
                 ...recipe,
                 ...payload,
@@ -175,15 +161,8 @@ export function updateRecipe(id: string, payload: RecipePayload): Result<Recipe,
 
 $update;
 export function deleteRecipe(id: string): Result<Recipe, string> {
-    return match(recipeStorage.get(id), {
-        Some: (deletedRecipe) => {
-            // checks if recipe owner is the caller
-            if(deletedRecipe.owner.toString() !== ic.caller().toString()){
-                return Result.Err<Recipe, string>("You are not the owner of the recipe")
-            }
-            recipeStorage.remove(id)
-            return Result.Ok<Recipe, string>(deletedRecipe)
-        },
+    return match(recipeStorage.remove(id), {
+        Some: (deletedRecipe) => Result.Ok<Recipe, string>(deletedRecipe),
         None: () => Result.Err<Recipe, string>(`Oops, we couldn't delete the recipe with the id=${id}. Recipe was not found`)
     });
 }
