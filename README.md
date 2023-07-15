@@ -63,9 +63,9 @@ dfx canister call recipe addRecipe '(record {"name"= "Delicious Egg Salad for Sa
 
 > Other recipes available includes the following (they should be placed in the curly braces {}):
 
->  - "name"= "Tres Leches Pancakes"; "ingredients"= "2/3 cup sweetened condensed milk, 1/2 cup evaporated milk, 1/3 cup half and half, 1 box French vanilla cake mix, 1 1/4 cups almond milk, 3 large eggs, lightly beaten, 4 tablespoons vegetable oil, divided"; "preparationSteps"= " Combine sweetened condensed milk, evaporated milk, and half and half in a small saucepan and set over medium heat. Bring to a boil, stirring constantly for 3 minutes. Remove from heat and let cool. This is a sauce. Add cake mix, almond milk, eggs, and 3 tablespoons vegetable oil to a large bowl, and beat vigorously by hand for 2 minutes. Heat a large skillet or griddle over medium heat, and lightly coat with remaining vegetable oil. Add 1/4 cup of the batter for each pancake. Cook until edges begin to puff up, small bubbles appear, pop, and leave small holes. Flip pancakes and cook until golden brown on the other side. Serve pancakes with a drizzle of the sauce."; "category"="breakfast"
+>  - dfx canister call recipe addRecipe '(record {"name"= "Tres Leches Pancakes"; "ingredients"= "2/3 cup sweetened condensed milk, 1/2 cup evaporated milk, 1/3 cup half and half, 1 box French vanilla cake mix, 1 1/4 cups almond milk, 3 large eggs, lightly beaten, 4 tablespoons vegetable oil, divided"; "preparationSteps"= "Combine sweetened condensed, evaporated milk, half and half in a small saucepan and set over medium heat. Bring to a boil, stirring constantly for 3 minutes. Remove from heat and let cool. This is a sauce. Add cake mix, almond milk, eggs, and 3 tablespoons vegetable oil to a large bowl, beat vigorously by hand for 2 minutes. Griddle over medium heat, and lightly coat with remaining vegetable oil. Add 1/4 cup of the batter for each pancake. Cook until edges begin to puff up, small bubbles appear, and leave small holes. Flip pancakes and cook until golden brown. Serve pancakes with a drizzle of the sauce."; "category"="breakfast"})'
 
->  - "name"= "Air Fryer Waffle Egg in a Hole"; "ingredients"= "1 frozen waffle, 1 large egg, salt and pepper to taste, 2 tablespoons shredded cheese, maple syrup to taste"; "preparationSteps"= "Preheat the air fryer to 350 degrees F (175 degrees C). Cut a hole in the center of the frozen waffle using the rim of a cup or glass (about 2 to 3 inches in diameter). Move waffle to a square of parchment paper, then carefully place the parchment paper into the preheated air fryer, along with the small center waffle. Crack egg directly into the center of waffle hole; season with salt and pepper to taste. Close the lid and cook until the white of the egg has started to set, about 5 to 6 minutes. Remove small center waffle from the air fryer. Sprinkle shredded cheese onto egg waffle, and cook until the cheese is melted and egg white is completely set, about 1 to 2 minutes. Transfer egg waffle onto a plate; drizzle with maple syrup and serve immediately."; "category"="breakfast"
+>  - dfx canister call recipe addRecipe '(record {"name"= "Air Fryer Waffle Egg in a Hole"; "ingredients"= "1 frozen waffle, 1 large egg, salt, pepper, 2 tablespoons shredded cheese, maple syrup to taste"; "preparationSteps"= "Preheat the air fryer to 175 degrees C. Cut a hole in the center of the frozen waffle using the rim of a cup. Move waffle to a square of parchment paper, then carefully place the parchment paper into the preheated air fryer, along with the small center waffle. Crack egg directly into the center of waffle hole; season with salt and pepper to taste. Close the lid and cook until the white of the egg has started to set, about 5 to 6 minutes. Remove small center waffle from the air fryer. Sprinkle shredded cheese onto egg waffle, and cook until the cheese is melted and egg white is completely set, about 1 to 2 minutes. Transfer egg waffle onto a plate; drizzle with maple syrup and serve immediately."; "category"="breakfast"})'
 
 
 ### 2. Rating a Recipe
@@ -97,7 +97,7 @@ dfx canister call recipe searchRecipes '("keyword")'
 ```
 
 ### 6. Get Top Rated Recipe
-- To get the top rated recipe, we will call the `getTopRatedRecipes()` function. Execute the following command in your terminal. This function does not require any arguments/parameters to be passed.
+- We will call the `getTopRatedRecipes()` function to get the top-rated recipe. Execute the following command in your terminal. This function does not require any arguments/parameters to be passed.
 ```bash
 dfx canister call recipe getTopRatedRecipes '()'
 ```
@@ -107,7 +107,7 @@ dfx canister call recipe getTopRatedRecipes '()'
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any
 contributions you make are **greatly appreciated**.
 
-If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also
+If you have a suggestion to improve this, please fork the repo and create a pull request. You can also
 simply open an issue with the tag "enhancement". Don't forget to give the project a star! Thanks again!
 
 1. Fork the Project
